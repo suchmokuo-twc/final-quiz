@@ -136,4 +136,24 @@ class ProductControllerTest {
                 .content(productDtoWithoutImage.toJson()))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void should_not_create_product_when_name_already_exists() throws Exception {
+        productRepository.save(ProductEntity.builder()
+                .name("可乐")
+                .build());
+
+        ProductDto productDto = ProductDto.builder()
+                .name("可乐")
+                .price(123)
+                .unit("unit")
+                .image("image")
+                .build();
+
+        mockMvc.perform(post("/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productDto.toJson()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("商品名称已存在，请输入新的商品名称")));
+    }
 }
