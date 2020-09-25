@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./Mall.scss";
 import { Product } from "./Product";
-import { ProductModel } from "../../models";
 import { apiGetProducts } from "../../api";
 
 export class Mall extends Component {
@@ -10,11 +9,6 @@ export class Mall extends Component {
   };
 
   setProducts = (products) => {
-    products = products.map(
-      ({ id, name, price, unit, image }) =>
-        new ProductModel(id, name, price, unit, image)
-    );
-
     this.setState({ products });
   };
 

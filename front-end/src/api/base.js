@@ -1,13 +1,30 @@
 export const URL = "http://localhost:8080";
 
-export async function post(url, body) {
+const baseRequestSetting = {
+  mode: "cors",
+};
+
+export async function httpGet(url) {
   return await fetch(url, {
-    body: JSON.stringify(body), // must match 'Content-Type' header
-    // credentials: "*", // include, same-origin, *omit
+    ...baseRequestSetting,
+    method: "GET",
+  });
+}
+
+export async function httpPost(url, body) {
+  return await fetch(url, {
+    ...baseRequestSetting,
+    body: JSON.stringify(body),
     headers: {
       "content-type": "application/json",
     },
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, cors, *same-origin
+    method: "POST",
+  });
+}
+
+export async function httpDelete(url) {
+  return await fetch(url, {
+    ...baseRequestSetting,
+    method: "DELETE",
   });
 }
