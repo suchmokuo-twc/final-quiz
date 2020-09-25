@@ -5,35 +5,29 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.List;
 
 @Entity
-@Table(name = "product")
+@Table(name = "`order`")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductEntity {
+public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    String name;
+    Integer amount;
 
-    Integer price;
-
-    String unit;
-
-    String image;
-
-    @OneToMany(mappedBy = "product")
-    List<OrderEntity> orders;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    ProductEntity product;
 }

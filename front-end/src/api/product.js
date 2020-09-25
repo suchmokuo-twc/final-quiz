@@ -1,4 +1,6 @@
-const ENDPOINT = "http://localhost:8080/products";
+import { URL } from "./base";
+
+const ENDPOINT = URL + "/products";
 
 export async function apiGetProducts() {
   const response = await fetch(ENDPOINT);

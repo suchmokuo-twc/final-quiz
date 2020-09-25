@@ -28,7 +28,7 @@ export class Mall extends Component {
     return (
       <div className="mall">
         {products.map((product) => (
-          <Product product={product} />
+          <Product key={product.id} product={product} />
         ))}
       </div>
     );
