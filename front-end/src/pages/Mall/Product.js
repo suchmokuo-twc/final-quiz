@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { VscAdd } from "react-icons/vsc";
 import { apiCreateOrder } from "../../api/order";
-import { OrderRequest } from "../../models";
+import { OrderRequestModel } from "../../models";
 import "./Product.scss";
 
 export class Product extends Component {
@@ -9,17 +9,19 @@ export class Product extends Component {
     addBtnDisabled: false,
   };
 
+  setAddBtnDisabled = (addBtnDisabled) => {
+    this.setState({ addBtnDisabled });
+  };
+
   onOrder = () => {
     const { id } = this.props.product;
 
-    this.setState({ addBtnDisabled: true });
+    this.setAddBtnDisabled(true);
 
-    const orderRequest = new OrderRequest(id, 1);
+    const orderRequest = new OrderRequestModel(id, 1);
 
     apiCreateOrder(orderRequest)
-      .then(() => {
-        this.setState({ addBtnDisabled: false });
-      })
+      .then(() => this.setAddBtnDisabled(false))
       .catch(console.error);
   };
 

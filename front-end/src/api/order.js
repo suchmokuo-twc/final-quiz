@@ -1,4 +1,4 @@
-import { OrderResponse } from "../models";
+import { OrderResponseModel } from "../models";
 import { post, URL } from "./base";
 
 const ENDPOINT = URL + "/orders";
@@ -23,6 +23,6 @@ export async function apiGetOrders() {
   }
 
   return data.map(
-    ({ id, amount, product }) => new OrderResponse(id, amount, product)
+    ({ id, amount, product }) => new OrderResponseModel(id, amount, product)
   );
 }
