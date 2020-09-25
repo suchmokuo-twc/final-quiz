@@ -1,0 +1,24 @@
+.header-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 90px;
+  height: 100%;
+
+  padding: 0 20px;
+
+  color: #aaa;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1684ff;
+    color: #fff;
+  }
+
+  svg {
+    margin-right: 8px;
+  }
+}
