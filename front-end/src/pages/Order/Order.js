@@ -3,7 +3,22 @@ import "./Order.scss";
 
 export class Order extends Component {
   state = {
-    orders: [],
+    orders: [
+      {
+        id: 1,
+        name: "可乐",
+        price: 1,
+        amount: 1,
+        unit: "瓶",
+      },
+      {
+        id: 2,
+        name: "可乐2",
+        price: 2,
+        amount: 2,
+        unit: "罐",
+      },
+    ],
   };
 
   ordersRender() {
@@ -16,7 +31,7 @@ export class Order extends Component {
         <td>{amount}</td>
         <td>{unit}</td>
         <td>
-          <button className="order-delete-btb">删除</button>
+          <button className="order-delete-btn">删除</button>
         </td>
       </tr>
     ));

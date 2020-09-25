@@ -1,0 +1,44 @@
+.order {
+  table {
+    width: 100%;
+
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    height: 60px;
+
+    text-align: center;
+  }
+
+  tr {
+    border-bottom: 2px solid #eee;
+
+    &:hover {
+      background-color: #fafafa;
+    }
+  }
+
+  thead {
+    background-color: #f8f8f8;
+  }
+}
+
+.order-delete-btn {
+  width: 70px;
+  height: 35px;
+
+  border: 2px solid #eee;
+  border-radius: 5px;
+  background-color: #f3f2f3;
+  cursor: pointer;
+
+  color: #c44449;
+  font-size: 15px;
+  font-weight: 500;
+
+  &:disabled {
+    cursor: default;
+  }
+}
