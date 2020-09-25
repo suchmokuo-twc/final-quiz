@@ -1,13 +1,16 @@
 package com.twuc.shopping.service;
 
 import com.twuc.shopping.dto.OrderRequestDto;
+import com.twuc.shopping.dto.OrderResponseDto;
 import com.twuc.shopping.entity.OrderEntity;
 import com.twuc.shopping.entity.ProductEntity;
 import com.twuc.shopping.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -34,5 +37,12 @@ public class OrderService {
                             .build())
                     .build());
         }
+    }
+
+    public List<OrderResponseDto> getOrders() {
+        return orderRepository.findAll()
+                .stream()
+                .map(OrderResponseDto::from)
+                .collect(Collectors.toList());
     }
 }

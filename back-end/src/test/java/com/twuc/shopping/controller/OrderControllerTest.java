@@ -15,8 +15,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -61,5 +65,29 @@ class OrderControllerTest {
 
         assertEquals(1, orderEntity.getAmount());
         assertEquals(orderDto.getProductId(), orderEntity.getProduct().getId());
+    }
+
+    @Test
+    void should_get_orders() throws Exception {
+        ProductEntity productEntity = productRepository.save(ProductEntity.builder()
+                .name("可乐1")
+                .price(1)
+                .unit("瓶")
+                .image("image1")
+                .build());
+
+        orderRepository.save(OrderEntity.builder()
+                .amount(2)
+                .product(productEntity)
+                .build());
+
+        mockMvc.perform(get("/orders"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].amount", is(2)))
+                .andExpect(jsonPath("$[0].product.name", is(productEntity.getName())))
+                .andExpect(jsonPath("$[0].product.price", is(productEntity.getPrice())))
+                .andExpect(jsonPath("$[0].product.unit", is(productEntity.getUnit())))
+                .andExpect(jsonPath("$[0].product.image", is(productEntity.getImage())));
     }
 }
