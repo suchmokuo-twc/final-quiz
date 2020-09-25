@@ -13,12 +13,12 @@
   font-weight: 500;
   cursor: pointer;
 
-  &:hover {
-    background-color: #1684ff;
-    color: #fff;
-  }
-
   svg {
     margin-right: 8px;
   }
+}
+
+.header-item.active {
+  background-color: #1684ff;
+  color: #fff;
 }
