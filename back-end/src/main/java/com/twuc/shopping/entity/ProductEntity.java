@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,6 +33,7 @@ public class ProductEntity {
 
     String image;
 
-    @OneToMany(mappedBy = "product")
+    // TODO: why orphanRemoval = true ?
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
     List<OrderEntity> orders;
 }

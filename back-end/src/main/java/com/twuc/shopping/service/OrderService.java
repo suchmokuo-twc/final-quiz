@@ -45,4 +45,8 @@ public class OrderService {
                 .map(OrderResponseDto::from)
                 .collect(Collectors.toList());
     }
+
+    public void deleteOrder(Integer orderId) {
+        orderRepository.deleteById(orderId);
+    }
 }
