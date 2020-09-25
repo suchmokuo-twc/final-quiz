@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.css";
-import { Mall } from "./pages";
+import { Mall, Order } from "./pages";
 
 function App() {
-  return <Mall />;
+  return <Order />;
 }
 
 export default App;
