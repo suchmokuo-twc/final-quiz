@@ -62,7 +62,7 @@ export class AddProduct extends Component {
   }
 
   handleCreateProductFaild(error) {
-    alert(error.message);
+    alert(`创建失败：${error.message}`);
   }
 
   formRender() {
