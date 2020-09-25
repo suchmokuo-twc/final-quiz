@@ -1,22 +1,59 @@
 import React, { Component } from "react";
-import { apiGetOrders } from "../../api/order";
+import { apiDeleteOrder, apiGetOrders } from "../../api/order";
 import "./Order.scss";
 
 export class Order extends Component {
   state = {
     orderResponses: [],
+    currentDeletingOrderIds: [],
   };
 
   setOrderResponses = (orderResponses) => {
     this.setState({ orderResponses });
   };
 
+  addCurrentDeletingOrderId(id) {
+    const { currentDeletingOrderIds } = this.state;
+    currentDeletingOrderIds.push(id);
+
+    this.setState({ currentDeletingOrderIds });
+  }
+
+  removeCurrentDeletingId(id) {
+    const { currentDeletingOrderIds } = this.state;
+
+    this.setState({
+      currentDeletingOrderIds: currentDeletingOrderIds.filter(
+        (orderId) => orderId !== id
+      ),
+    });
+  }
+
   componentDidMount() {
     apiGetOrders().then(this.setOrderResponses).catch(console.error);
   }
 
-  ordersRender() {
+  deleteOrder(id) {
+    this.addCurrentDeletingOrderId(id);
+
+    apiDeleteOrder(id)
+      .then(() => this.handleDeleteOrderSucceed(id))
+      .catch((error) => this.handleDeleteOrderFailed(error))
+      .finally(() => this.removeCurrentDeletingId(id));
+  }
+
+  handleDeleteOrderSucceed(id) {
     const { orderResponses } = this.state;
+
+    this.setOrderResponses(orderResponses.filter((o) => o.id !== id));
+  }
+
+  handleDeleteOrderFailed(error) {
+    alert(`删除失败：${error.message}`);
+  }
+
+  ordersRender() {
+    const { orderResponses, currentDeletingOrderIds } = this.state;
 
     return orderResponses.map(
       ({ id, amount, product: { name, price, unit } }) => (
@@ -26,7 +63,13 @@ export class Order extends Component {
           <td>{amount}</td>
           <td>{unit}</td>
           <td>
-            <button className="order-delete-btn">删除</button>
+            <button
+              className="order-delete-btn"
+              disabled={currentDeletingOrderIds.includes(id)}
+              onClick={() => this.deleteOrder(id)}
+            >
+              删除
+            </button>
           </td>
         </tr>
       )

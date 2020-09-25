@@ -1,10 +1,10 @@
 import { OrderResponseModel } from "../models";
-import { post, URL } from "./base";
+import { httpDelete, httpGet, httpPost, URL } from "./base";
 
 const ENDPOINT = URL + "/orders";
 
 export async function apiCreateOrder(orderRequest) {
-  const response = await post(ENDPOINT, orderRequest);
+  const response = await httpPost(ENDPOINT, orderRequest);
 
   if (response.status !== 201) {
     const data = await response.json();
@@ -15,7 +15,7 @@ export async function apiCreateOrder(orderRequest) {
 }
 
 export async function apiGetOrders() {
-  const response = await fetch(ENDPOINT);
+  const response = await httpGet(ENDPOINT);
   const data = await response.json();
 
   if (response.status !== 200) {
@@ -25,4 +25,15 @@ export async function apiGetOrders() {
   return data.map(
     ({ id, amount, product }) => new OrderResponseModel(id, amount, product)
   );
+}
+
+export async function apiDeleteOrder(id) {
+  const response = await httpDelete(`${ENDPOINT}/${id}`);
+
+  if (response.status !== 204) {
+    const data = await response.json();
+    throw new Error(data.error);
+  }
+
+  return;
 }
