@@ -9,6 +9,19 @@ export class AddProduct extends Component {
     creating: false,
   };
 
+  get formValuesValid() {
+    const { name, price, unit, image } = this.state.formValues;
+
+    return name && price && unit && image;
+  }
+
+  get submitBtnDisabled() {
+    const { creating } = this.state;
+    const { formValuesValid } = this;
+
+    return creating || !formValuesValid;
+  }
+
   setFormValue(key, value) {
     const { formValues } = this.state;
 
@@ -53,8 +66,7 @@ export class AddProduct extends Component {
   }
 
   formRender() {
-    const { onFormFieldChange, onFormSubmit } = this;
-    const { creating } = this.state;
+    const { onFormFieldChange, onFormSubmit, submitBtnDisabled } = this;
 
     return (
       <form>
@@ -107,7 +119,7 @@ export class AddProduct extends Component {
         <button
           className="add-product-submit-btn"
           onClick={onFormSubmit}
-          disabled={creating}
+          disabled={submitBtnDisabled}
         >
           提交
         </button>
