@@ -85,4 +85,55 @@ class ProductControllerTest {
         assertEquals(productDto.getUnit(), productEntity.getUnit());
         assertEquals(productDto.getImage(), productEntity.getImage());
     }
+
+    @Test
+    void should_not_create_product_when_invalid_input() throws Exception {
+        ProductDto productDtoWithoutName = ProductDto.builder()
+                .name(null)
+                .price(123)
+                .unit("unit")
+                .image("image")
+                .build();
+
+        mockMvc.perform(post("/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productDtoWithoutName.toJson()))
+                .andExpect(status().isBadRequest());
+
+        ProductDto productDtoWithoutPrice = ProductDto.builder()
+                .name("name")
+                .price(null)
+                .unit("unit")
+                .image("image")
+                .build();
+
+        mockMvc.perform(post("/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productDtoWithoutPrice.toJson()))
+                .andExpect(status().isBadRequest());
+
+        ProductDto productDtoWithoutUnit = ProductDto.builder()
+                .name("name")
+                .price(123)
+                .unit(null)
+                .image("image")
+                .build();
+
+        mockMvc.perform(post("/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productDtoWithoutUnit.toJson()))
+                .andExpect(status().isBadRequest());
+
+        ProductDto productDtoWithoutImage = ProductDto.builder()
+                .name("name")
+                .price(123)
+                .unit("unit")
+                .image(null)
+                .build();
+
+        mockMvc.perform(post("/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productDtoWithoutImage.toJson()))
+                .andExpect(status().isBadRequest());
+    }
 }
