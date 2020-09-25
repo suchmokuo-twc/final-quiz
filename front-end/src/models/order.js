@@ -4,3 +4,11 @@ export class OrderRequest {
     this.amount = amount;
   }
 }
+
+export class OrderResponse {
+  constructor(id, amount, product) {
+    this.id = id;
+    this.amount = amount;
+    this.product = product;
+  }
+}

@@ -1,43 +1,49 @@
 import React, { Component } from "react";
+import { apiGetOrders } from "../../api/order";
 import "./Order.scss";
 
 export class Order extends Component {
   state = {
-    orders: [
-      {
-        id: 1,
-        name: "可乐",
-        price: 1,
-        amount: 1,
-        unit: "瓶",
-      },
-      {
-        id: 2,
-        name: "可乐2",
-        price: 2,
-        amount: 2,
-        unit: "罐",
-      },
-    ],
+    orderResponses: [],
   };
 
-  ordersRender() {
-    const { orders } = this.state;
+  setOrderResponses = (orderResponses) => {
+    this.setState({ orderResponses });
+  };
 
-    return orders.map(({ id, name, price, amount, unit }) => (
-      <tr key={id}>
-        <td>{name}</td>
-        <td>{price}</td>
-        <td>{amount}</td>
-        <td>{unit}</td>
-        <td>
-          <button className="order-delete-btn">删除</button>
-        </td>
-      </tr>
-    ));
+  componentDidMount() {
+    apiGetOrders().then(this.setOrderResponses).catch(console.error);
+  }
+
+  ordersRender() {
+    const { orderResponses } = this.state;
+
+    return orderResponses.map(
+      ({ id, amount, product: { name, price, unit } }) => (
+        <tr key={id}>
+          <td>{name}</td>
+          <td>{price}</td>
+          <td>{amount}</td>
+          <td>{unit}</td>
+          <td>
+            <button className="order-delete-btn">删除</button>
+          </td>
+        </tr>
+      )
+    );
   }
 
   render() {
+    const { orderResponses } = this.state;
+
+    if (orderResponses.length === 0) {
+      return (
+        <div className="order-no-data">
+          <p>暂无订单，返回商城页面继续购买</p>
+        </div>
+      );
+    }
+
     return (
       <div className="order">
         <table>

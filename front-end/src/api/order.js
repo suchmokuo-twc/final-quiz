@@ -1,3 +1,4 @@
+import { OrderResponse } from "../models";
 import { post, URL } from "./base";
 
 const ENDPOINT = URL + "/orders";
@@ -11,4 +12,17 @@ export async function apiCreateOrder(orderRequest) {
   }
 
   return;
+}
+
+export async function apiGetOrders() {
+  const response = await fetch(ENDPOINT);
+  const data = await response.json();
+
+  if (response.status !== 200) {
+    throw new Error(data.error);
+  }
+
+  return data.map(
+    ({ id, amount, product }) => new OrderResponse(id, amount, product)
+  );
 }
