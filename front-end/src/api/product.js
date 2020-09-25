@@ -1,5 +1,5 @@
 import { ProductModel } from "../models";
-import { httpGet, URL } from "./base";
+import { httpGet, httpPost, URL } from "./base";
 
 const ENDPOINT = URL + "/products";
 
@@ -15,4 +15,15 @@ export async function apiGetProducts() {
     ({ id, name, price, unit, image }) =>
       new ProductModel(id, name, price, unit, image)
   );
+}
+
+export async function apiCreateProduct(product) {
+  const response = await httpPost(ENDPOINT, product);
+
+  if (response.status !== 201) {
+    const data = await response.json();
+    throw new Error(data.error);
+  }
+
+  return;
 }
