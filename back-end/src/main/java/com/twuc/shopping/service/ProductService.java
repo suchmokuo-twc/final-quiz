@@ -1,6 +1,7 @@
 package com.twuc.shopping.service;
 
 import com.twuc.shopping.dto.ProductDto;
+import com.twuc.shopping.entity.ProductEntity;
 import com.twuc.shopping.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,9 @@ public class ProductService {
         return productRepository.findAll().stream()
                 .map(ProductDto::from)
                 .collect(Collectors.toList());
+    }
+
+    public void createProduct(ProductDto productDto) {
+        productRepository.save(ProductEntity.from(productDto));
     }
 }

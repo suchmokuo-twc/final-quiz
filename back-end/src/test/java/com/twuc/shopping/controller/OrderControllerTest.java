@@ -1,7 +1,6 @@
 package com.twuc.shopping.controller;
 
 import com.twuc.shopping.dto.OrderRequestDto;
-import com.twuc.shopping.dto.ProductDto;
 import com.twuc.shopping.entity.OrderEntity;
 import com.twuc.shopping.entity.ProductEntity;
 import com.twuc.shopping.repository.OrderRepository;
@@ -19,7 +18,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

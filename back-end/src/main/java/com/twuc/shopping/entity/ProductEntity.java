@@ -1,5 +1,6 @@
 package com.twuc.shopping.entity;
 
+import com.twuc.shopping.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,4 +37,14 @@ public class ProductEntity {
     // TODO: why orphanRemoval = true ?
     @OneToMany(mappedBy = "product", orphanRemoval = true)
     List<OrderEntity> orders;
+
+    public static ProductEntity from(ProductDto productDto) {
+        return ProductEntity.builder()
+                .id(productDto.getId())
+                .name(productDto.getName())
+                .price(productDto.getPrice())
+                .unit(productDto.getUnit())
+                .image(productDto.getImage())
+                .build();
+    }
 }
