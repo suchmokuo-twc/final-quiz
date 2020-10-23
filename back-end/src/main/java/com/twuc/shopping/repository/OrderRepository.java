@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends CrudRepository<OrderEntity, Integer> {
+public interface OrderRepository extends CrudRepository<OrderEntity, String> {
 
     List<OrderEntity> findAll();
-
-    Optional<OrderEntity> findByProductId(Integer productId);
 }

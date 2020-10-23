@@ -10,9 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -24,19 +22,15 @@ public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    String name;
+    private String name;
 
-    Integer price;
+    private Integer price;
 
-    String unit;
+    private String unit;
 
-    String image;
-
-    // TODO: why orphanRemoval = true ?
-    @OneToMany(mappedBy = "product", orphanRemoval = true)
-    List<OrderEntity> orders;
+    private String image;
 
     public static ProductEntity from(ProductDto productDto) {
         return ProductEntity.builder()

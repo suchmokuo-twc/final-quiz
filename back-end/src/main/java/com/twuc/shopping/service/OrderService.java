@@ -1,52 +1,52 @@
 package com.twuc.shopping.service;
 
-import com.twuc.shopping.dto.OrderRequestDto;
-import com.twuc.shopping.dto.OrderResponseDto;
+import com.twuc.shopping.dto.OrderDto;
 import com.twuc.shopping.entity.OrderEntity;
-import com.twuc.shopping.entity.ProductEntity;
+import com.twuc.shopping.entity.OrderProductsEntity;
+import com.twuc.shopping.repository.OrderProductsRepository;
 import com.twuc.shopping.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderProductsRepository orderProductsRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository,
+                        OrderProductsRepository orderProductsRepository) {
         this.orderRepository = orderRepository;
+        this.orderProductsRepository = orderProductsRepository;
     }
 
-    public void createOrder(OrderRequestDto orderDto) {
-        Optional<OrderEntity> orderEntityOptional = orderRepository.findByProductId(orderDto.getProductId());
+    @Transactional
+    public void createOrder(OrderDto orderDto) {
+        OrderEntity orderEntity = OrderEntity.builder().build();
+        orderRepository.save(orderEntity);
 
-        if (orderEntityOptional.isPresent()) {
-            OrderEntity orderEntity = orderEntityOptional.get();
-            orderEntity.setAmount(orderEntity.getAmount() + 1);
-            orderRepository.save(orderEntity);
-        } else {
-            orderRepository.save(OrderEntity.builder()
-                    .amount(1)
-                    .product(ProductEntity.builder()
-                            .id(orderDto.getProductId())
-                            .build())
-                    .build());
-        }
+        orderDto.getProducts().forEach(orderProductDto -> {
+            OrderProductsEntity orderProductsEntity = OrderProductsEntity.builder()
+                    .orderId(orderEntity.getId())
+                    .productAmount(orderProductDto.getAmount())
+                    .productId(orderProductDto.getProduct().getId())
+                .build();
+
+            orderProductsRepository.save(orderProductsEntity);
+        });
     }
 
-    public List<OrderResponseDto> getOrders() {
-        return orderRepository.findAll()
-                .stream()
-                .map(OrderResponseDto::from)
-                .collect(Collectors.toList());
-    }
-
-    public void deleteOrder(Integer orderId) {
-        orderRepository.deleteById(orderId);
-    }
+//    public List<OrderResponseDto> getOrders() {
+//        return orderRepository.findAll()
+//                .stream()
+//                .map(OrderResponseDto::from)
+//                .collect(Collectors.toList());
+//    }
+//
+//    public void deleteOrder(String orderId) {
+//        orderRepository.deleteById(orderId);
+//    }
 }
