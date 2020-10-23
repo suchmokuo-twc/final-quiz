@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +47,7 @@ public class OrderService {
         });
     }
 
+    @Transactional
     public List<OrderDto> getOrders() {
         return orderRepository.findAll()
                 .stream()
@@ -76,8 +76,9 @@ public class OrderService {
                 .build();
     }
 
-//
-//    public void deleteOrder(String orderId) {
-//        orderRepository.deleteById(orderId);
-//    }
+    @Transactional
+    public void deleteOrder(String orderId) {
+        orderRepository.deleteById(orderId);
+        orderProductsRepository.deleteAllByOrderId(orderId);
+    }
 }

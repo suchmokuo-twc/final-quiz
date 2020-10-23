@@ -24,6 +24,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -125,23 +126,38 @@ class OrderControllerTest {
 
     @Test
     void should_delete_order() throws Exception {
-//        ProductEntity productEntity = productRepository.save(ProductEntity.builder()
-//                .name("可乐1")
-//                .price(1)
-//                .unit("瓶")
-//                .image("image1")
-//                .build());
-//
-//        OrderEntity orderEntity = orderRepository.save(OrderEntity.builder()
-//                .amount(2)
-//                .product(productEntity)
-//                .build());
-//
-//        Integer orderEntityId = orderEntity.getId();
-//
-//        mockMvc.perform(delete("/orders/" + orderEntityId))
-//                .andExpect(status().isNoContent());
-//
-//        assertFalse(orderRepository.findById(orderEntityId).isPresent());
+        ProductEntity productEntity1 = productRepository.save(ProductEntity.builder()
+                .name("可乐1")
+                .price(1)
+                .unit("瓶")
+                .image("image1")
+                .build());
+
+        ProductEntity productEntity2 = productRepository.save(ProductEntity.builder()
+                .name("可乐2")
+                .price(1)
+                .unit("瓶")
+                .image("image2")
+                .build());
+
+        String orderId = orderRepository.save(OrderEntity.builder().build()).getId();
+
+        orderProductsRepository.save(OrderProductsEntity.builder()
+                .orderId(orderId)
+                .productId(productEntity1.getId())
+                .productAmount(1)
+                .build());
+
+        orderProductsRepository.save(OrderProductsEntity.builder()
+                .orderId(orderId)
+                .productId(productEntity2.getId())
+                .productAmount(2)
+                .build());
+
+        mockMvc.perform(delete("/orders/" + orderId))
+                .andExpect(status().isNoContent());
+
+        assertFalse(orderRepository.findById(orderId).isPresent());
+        assertTrue(orderProductsRepository.findAllByOrderId(orderId).isEmpty());
     }
 }

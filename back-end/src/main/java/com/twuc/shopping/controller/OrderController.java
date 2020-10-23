@@ -4,7 +4,9 @@ import com.twuc.shopping.dto.OrderDto;
 import com.twuc.shopping.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,10 +39,10 @@ public class OrderController {
     List<OrderDto> getOrders() {
         return orderService.getOrders();
     }
-//
-//    @DeleteMapping("/{orderId}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    void deleteOrder(@PathVariable String orderId) {
-//        orderService.deleteOrder(orderId);
-//    }
+
+    @DeleteMapping("/{orderId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteOrder(@PathVariable String orderId) {
+        orderService.deleteOrder(orderId);
+    }
 }

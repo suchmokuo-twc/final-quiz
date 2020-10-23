@@ -12,4 +12,6 @@ public interface OrderProductsRepository extends CrudRepository<OrderProductsEnt
     List<OrderProductsEntity> findAll();
 
     List<OrderProductsEntity> findAllByOrderId(String orderId);
+
+    void deleteAllByOrderId(String orderId);
 }
