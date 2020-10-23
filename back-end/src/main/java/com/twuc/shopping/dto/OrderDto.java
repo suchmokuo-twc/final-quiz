@@ -32,7 +32,6 @@ public class OrderDto extends BaseDto {
     @NoArgsConstructor
     public static class OrderProductDto extends BaseDto {
 
-        @Valid
         @NotNull
         private ProductDto product;
 

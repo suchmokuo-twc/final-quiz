@@ -5,6 +5,10 @@ export class Header extends Component {
   render() {
     const { children } = this.props;
 
-    return <header className="header">{children}</header>;
+    return (
+      <header className="header">
+        <div className="header-container">{children}</div>
+      </header>
+    );
   }
 }

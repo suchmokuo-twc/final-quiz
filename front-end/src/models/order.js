@@ -1,3 +1,5 @@
+import { ProductModel } from "./product";
+
 export class OrderRequestModel {
   constructor(productId, amount) {
     this.productId = productId;
@@ -5,10 +7,18 @@ export class OrderRequestModel {
   }
 }
 
-export class OrderResponseModel {
-  constructor(id, amount, product) {
+export class OrdersResponseModel {
+  constructor(id, products) {
     this.id = id;
-    this.amount = amount;
-    this.product = product;
+    this.products = products.map(({ product, amount }) => ({
+      amount,
+      product: new ProductModel(
+        product.id,
+        product.name,
+        product.price,
+        product.unit,
+        product.image
+      ),
+    }));
   }
 }

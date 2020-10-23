@@ -1,4 +1,4 @@
-import { OrderResponseModel } from "../models";
+import { OrdersResponseModel } from "../models";
 import { httpDelete, httpGet, httpPost, URL } from "./base";
 
 const ENDPOINT = URL + "/orders";
@@ -22,9 +22,7 @@ export async function apiGetOrders() {
     throw new Error(data.error);
   }
 
-  return data.map(
-    ({ id, amount, product }) => new OrderResponseModel(id, amount, product)
-  );
+  return data.map(({ id, products }) => new OrdersResponseModel(id, products));
 }
 
 export async function apiDeleteOrder(id) {

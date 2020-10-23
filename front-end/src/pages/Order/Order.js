@@ -4,12 +4,12 @@ import "./Order.scss";
 
 export class Order extends Component {
   state = {
-    orderResponses: [],
+    ordersResponses: [],
     currentDeletingOrderIds: [],
   };
 
-  setOrderResponses = (orderResponses) => {
-    this.setState({ orderResponses });
+  setOrderResponses = (ordersResponses) => {
+    this.setState({ ordersResponses });
   };
 
   addCurrentDeletingOrderId(id) {
@@ -43,43 +43,76 @@ export class Order extends Component {
   }
 
   handleDeleteOrderSucceed(id) {
-    const { orderResponses } = this.state;
+    const { ordersResponses } = this.state;
 
-    this.setOrderResponses(orderResponses.filter((o) => o.id !== id));
+    this.setOrderResponses(ordersResponses.filter((o) => o.id !== id));
   }
 
   handleDeleteOrderFailed() {
-    alert('订单删除失败，请稍后再试');
+    alert("订单删除失败，请稍后再试");
   }
 
-  ordersRender() {
-    const { orderResponses, currentDeletingOrderIds } = this.state;
-
-    return orderResponses.map(
-      ({ id, amount, product: { name, price, unit } }) => (
-        <tr key={id}>
-          <td>{name}</td>
-          <td>{price}</td>
-          <td>{amount}</td>
-          <td>{unit}</td>
-          <td>
-            <button
-              className="order-delete-btn"
-              disabled={currentDeletingOrderIds.includes(id)}
-              onClick={() => this.deleteOrder(id)}
-            >
-              删除
-            </button>
-          </td>
-        </tr>
-      )
+  getOrderTotalPrice(order) {
+    return order.products.reduce(
+      (totalPrice, product) =>
+        totalPrice + product.amount * product.product.price,
+      0
     );
   }
 
-  render() {
-    const { orderResponses } = this.state;
+  orderRender = (order) => {
+    const { currentDeletingOrderIds } = this.state;
+    const { id, products } = order;
 
-    if (orderResponses.length === 0) {
+    return (
+      <div className="order-info" key={id}>
+        <div className="order-info-title">
+          <span>订单号：{id}</span>
+          <button
+            disabled={currentDeletingOrderIds.includes(id)}
+            onClick={() => this.deleteOrder(id)}
+          >
+            删除
+          </button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>名称</th>
+              <th>单价</th>
+              <th>数量</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product, index) => (
+              <tr key={id + product.product.id}>
+                <td className="order-table-bold-cell">{index + 1}</td>
+                <td>{product.product.name}</td>
+                <td>{product.product.price.toFixed(2)}</td>
+                <td>
+                  {product.amount}
+                  {product.product.unit}
+                </td>
+              </tr>
+            ))}
+            <tr className="order-total-price">
+              <td className="order-table-bold-cell">总价</td>
+              <td></td>
+              <td className="order-table-bold-cell">{this.getOrderTotalPrice(order).toFixed(2)}</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  render() {
+    const { ordersResponses } = this.state;
+
+    if (ordersResponses.length === 0) {
       return (
         <div className="order-no-data">
           <p>暂无订单，返回商城页面继续购买</p>
@@ -87,21 +120,6 @@ export class Order extends Component {
       );
     }
 
-    return (
-      <div className="order">
-        <table>
-          <thead>
-            <tr>
-              <th>名字</th>
-              <th>单价</th>
-              <th>数量</th>
-              <th>单位</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>{this.ordersRender()}</tbody>
-        </table>
-      </div>
-    );
+    return <div className="order">{ordersResponses.map(this.orderRender)}</div>;
   }
 }

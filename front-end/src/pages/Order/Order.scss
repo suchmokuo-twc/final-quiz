@@ -25,24 +25,6 @@
   }
 }
 
-.order-delete-btn {
-  width: 70px;
-  height: 35px;
-
-  border: 2px solid #eee;
-  border-radius: 5px;
-  background-color: #f3f2f3;
-  cursor: pointer;
-
-  color: #c44449;
-  font-size: 15px;
-  font-weight: 500;
-
-  &:disabled {
-    cursor: default;
-  }
-}
-
 .order-no-data {
   display: flex;
   align-items: center;
@@ -53,4 +35,52 @@
 
   font-size: 14px;
   color: gray;
+}
+
+.order-info {
+  margin-bottom: 20px;
+}
+
+.order-info-title {
+  display: flex;
+  align-items: center;
+
+  height: 70px;
+
+  padding: 0 20px;
+
+  border-top: 2px solid #eee;
+  background-color: #f0f0f0;
+
+  span {
+    font-size: 18px;
+  }
+
+  button {
+    width: 70px;
+    height: 35px;
+
+    margin-left: auto;
+
+    border: 0;
+    border-radius: 5px;
+    background-color: #d72f3d;
+    cursor: pointer;
+  
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+
+    &:disabled {
+      cursor: default;
+    }
+  }
+}
+
+.order-table-bold-cell {
+  font-weight: bolder;
+}
+
+.order-total-price {
+  border-bottom: none !important;
 }
