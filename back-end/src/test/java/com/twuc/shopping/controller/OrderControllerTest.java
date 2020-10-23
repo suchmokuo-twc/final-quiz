@@ -84,26 +84,43 @@ class OrderControllerTest {
 
     @Test
     void should_get_orders() throws Exception {
-//        ProductEntity productEntity = productRepository.save(ProductEntity.builder()
-//                .name("可乐1")
-//                .price(1)
-//                .unit("瓶")
-//                .image("image1")
-//                .build());
-//
-//        orderRepository.save(OrderEntity.builder()
-//                .amount(2)
-//                .product(productEntity)
-//                .build());
-//
-//        mockMvc.perform(get("/orders"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$", hasSize(1)))
-//                .andExpect(jsonPath("$[0].amount", is(2)))
-//                .andExpect(jsonPath("$[0].product.name", is(productEntity.getName())))
-//                .andExpect(jsonPath("$[0].product.price", is(productEntity.getPrice())))
-//                .andExpect(jsonPath("$[0].product.unit", is(productEntity.getUnit())))
-//                .andExpect(jsonPath("$[0].product.image", is(productEntity.getImage())));
+        ProductEntity productEntity1 = productRepository.save(ProductEntity.builder()
+                .name("可乐1")
+                .price(1)
+                .unit("瓶")
+                .image("image1")
+                .build());
+
+        ProductEntity productEntity2 = productRepository.save(ProductEntity.builder()
+                .name("可乐2")
+                .price(1)
+                .unit("瓶")
+                .image("image2")
+                .build());
+
+        String orderId = orderRepository.save(OrderEntity.builder().build()).getId();
+
+        orderProductsRepository.save(OrderProductsEntity.builder()
+                .orderId(orderId)
+                .productId(productEntity1.getId())
+                .productAmount(1)
+                .build());
+
+        orderProductsRepository.save(OrderProductsEntity.builder()
+                .orderId(orderId)
+                .productId(productEntity2.getId())
+                .productAmount(2)
+                .build());
+
+        mockMvc.perform(get("/orders"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(orderId)))
+                .andExpect(jsonPath("$[0].products", hasSize(2)))
+                .andExpect(jsonPath("$[0].products[0].product.id", is(productEntity1.getId())))
+                .andExpect(jsonPath("$[0].products[0].amount", is(1)))
+                .andExpect(jsonPath("$[0].products[1].product.id", is(productEntity2.getId())))
+                .andExpect(jsonPath("$[0].products[1].amount", is(2)));
     }
 
     @Test

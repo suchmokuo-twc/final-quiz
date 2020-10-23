@@ -10,4 +10,6 @@ import java.util.List;
 public interface OrderProductsRepository extends CrudRepository<OrderProductsEntity, Integer> {
 
     List<OrderProductsEntity> findAll();
+
+    List<OrderProductsEntity> findAllByOrderId(String orderId);
 }

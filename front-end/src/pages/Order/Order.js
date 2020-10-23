@@ -48,8 +48,8 @@ export class Order extends Component {
     this.setOrderResponses(orderResponses.filter((o) => o.id !== id));
   }
 
-  handleDeleteOrderFailed(error) {
-    alert(`删除失败：${error.message}`);
+  handleDeleteOrderFailed() {
+    alert('订单删除失败，请稍后再试');
   }
 
   ordersRender() {
